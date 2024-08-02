@@ -1,4 +1,4 @@
-Inventory Management System
+#Inventory Management System
 Overview
 This is a modern, minimalist inventory management system built using Next.js and Firebase. It features a sleek, dark-themed UI, responsive design, and real-time inventory tracking. Users can manage their inventory, add and remove items, and search for items efficiently. The application supports dark mode based on system settings and includes a visually appealing background animation.
 

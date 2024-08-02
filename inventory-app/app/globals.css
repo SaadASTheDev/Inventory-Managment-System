@@ -1,9 +1,86 @@
-
+/* styles/globals.css */
 
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  color: white;
+  color: #ffffff; /* Default text color */
 }
 
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(45deg, #7e21ff, #ae97c6); /* Gradient background */
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite; /* Animation for gradient background */
+  color: #ffffff; /* Default text color for better readability */
+  overflow: hidden;
+}
+
+/* Keyframes for background gradient animation */
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+/* Ensure all elements have a consistent font size and line height */
+html, body {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+a {
+  color: #7e21ff; /* Primary color for links */
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline; /* Underline links on hover */
+}
+
+/* Button styling */
+button {
+  background-color: #7e21ff; /* Primary button color */
+  color: #ffffff; /* Button text color */
+  border: none;
+  padding: 0.5em 1em;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #5a16c4; /* Darker shade for hover effect */
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  color: #ffffff; /* Ensure heading text is visible */
+}
+
+input, textarea {
+  border-radius: 5px;
+  border: 1px solid #ae97c6; /* Light border for input fields */
+  padding: 0.5em;
+  background: #121212; /* Dark background for input fields */
+  color: #ffffff; /* Text color for input fields */
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: #7e21ff; /* Highlight border color on focus */
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1em;
+}

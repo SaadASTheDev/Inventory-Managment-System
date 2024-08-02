@@ -1,0 +1,12 @@
+# Node modules
+/node_modules/
+
+# Environment variables
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Firebase configuration files
+firebase.json
+.firebaserc

@@ -67,7 +67,7 @@ export default function Home() {
 
   const updateInventory = async () => {
     if (!user) return;
-    const snapshot = query(collection(firestore, 'inventory'), where('userId', '==', user.uid));
+    const snapshot = query(collection(firestore, `users/${user.uid}/inventory`));
     const docs = await getDocs(snapshot);
     const inventoryList = [];
     docs.forEach((doc) => {
@@ -82,7 +82,7 @@ export default function Home() {
 
   const addItem = async (item) => {
     if (!user) return;
-    const docRef = doc(collection(firestore, 'inventory'), item);
+    const docRef = doc(collection(firestore, `users/${user.uid}/inventory`), item);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       const { quantity } = docSnap.data();
@@ -98,7 +98,7 @@ export default function Home() {
 
   const removeItem = async (item) => {
     if (!user) return;
-    const docRef = doc(collection(firestore, 'inventory'), item);
+    const docRef = doc(collection(firestore, `users/${user.uid}/inventory`), item);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       const { quantity } = docSnap.data();
@@ -274,16 +274,14 @@ export default function Home() {
               </DialogActions>
             </Dialog>
             <Dialog open={confirmOpen} onClose={() => setConfirmOpen(false)}>
-              <DialogTitle>Confirm Items</DialogTitle>
+              <DialogTitle>Confirm Detected Items</DialogTitle>
               <DialogContent>
                 <DialogContentText>
                   The following items were detected. Confirm to add them to your inventory.
                 </DialogContentText>
-                <Box maxHeight="200px" overflow="auto">
+                <Box mt={2}>
                   {detectedItems.map((item, index) => (
-                    <Typography key={index} variant="h6" color="text.primary">
-                      {item}
-                    </Typography>
+                    <Typography key={index} variant="body1">{item}</Typography>
                   ))}
                 </Box>
               </DialogContent>
@@ -292,10 +290,12 @@ export default function Home() {
                 <Button onClick={handleConfirm}>Confirm</Button>
               </DialogActions>
             </Dialog>
-            <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={() => setSnackbarOpen(false)}>
-              <Alert onClose={() => setSnackbarOpen(false)} severity={snackbarSeverity}>
-                {snackbarMessage}
-              </Alert>
+            <Snackbar
+              open={snackbarOpen}
+              autoHideDuration={3000}
+              onClose={() => setSnackbarOpen(false)}
+            >
+              <Alert severity={snackbarSeverity}>{snackbarMessage}</Alert>
             </Snackbar>
           </>
         )}

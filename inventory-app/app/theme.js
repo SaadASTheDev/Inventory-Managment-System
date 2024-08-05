@@ -1,42 +1,37 @@
 'use client';
-
-import { useState, useRef, useEffect } from "react";
-import axios from 'axios';
+import { useState, useEffect } from "react";
 import { firestore } from "@/firebase";
-import {
-  Box, Stack, Typography, TextField, Button, IconButton, Snackbar, Alert, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions
-} from "@mui/material";
+import { Box, Stack, Typography, TextField, Button, IconButton, Snackbar, Alert, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { collection, doc, getDoc, query, getDocs, updateDoc, setDoc, deleteDoc, where } from "firebase/firestore";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import SearchIcon from '@mui/icons-material/Search';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import Webcam from 'react-webcam';
 import AuthForm from "@/app/AuthForm";
 
+// Define your custom theme
 const theme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: 'dark', // Assuming dark mode for a modern techy look
     primary: {
-      main: '#7e21ff',
+      main: '#7e21ff', // Primary color
     },
     secondary: {
-      main: '#121212',
+      main: '#121212', // Secondary color
     },
     background: {
-      default: '#121212',
-      paper: '#1c1c1c',
+      default: '#121212', // Dark background
+      paper: '#1c1c1c', // Slightly lighter paper color
     },
     text: {
-      primary: '#ffffff',
-      secondary: '#ae97c6',
+      primary: '#ffffff', // White text for contrast
+      secondary: '#ae97c6', // Mix color for secondary text
     },
     error: {
-      main: '#f44336',
+      main: '#f44336', // Red color for errors
     },
     success: {
-      main: '#4caf50',
+      main: '#4caf50', // Green color for success
     },
   },
   typography: {
@@ -54,10 +49,6 @@ export default function Home() {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [webcamOpen, setWebcamOpen] = useState(false);
-  const [detectedItems, setDetectedItems] = useState([]);
-  const [confirmOpen, setConfirmOpen] = useState(false);
-  const webcamRef = useRef(null);
 
   useEffect(() => {
     if (user) {
@@ -123,47 +114,16 @@ export default function Home() {
     setFilteredInventory(filteredItems);
   };
 
-  const capture = async () => {
-    const imageSrc = webcamRef.current.getScreenshot();
-    setWebcamOpen(false);
-
-    const formData = new FormData();
-    formData.append('image', imageSrc);
-
-    try {
-      const response = await axios.post('/api/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-
-      const { items } = response.data;
-      setDetectedItems(items);
-      setConfirmOpen(true);
-    } catch (error) {
-      console.error('Error uploading image:', error);
-      setSnackbarMessage('Error processing image');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
-    }
-  };
-
-  const handleConfirm = async () => {
-    for (const item of detectedItems) {
-      await addItem(item);
-    }
-    setDetectedItems([]);
-    setConfirmOpen(false);
-  };
-
   return (
     <ThemeProvider theme={theme}>
       <Box
         width='100vw'
         height='100vh'
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
+        display={"flex"}
+        justifyContent={"center"}
+        alignItems={"center"}
         gap={2}
-        flexDirection="column"
+        flexDirection={"column"}
         bgcolor="background.default"
         p={2}
       >
@@ -171,61 +131,69 @@ export default function Home() {
           <AuthForm onAuthChange={setUser} />
         ) : (
           <>
-            <Stack direction="row" spacing={2} alignItems="center">
+            <Stack direction="row" spacing={2} alignItems="center" mb={2}>
               <TextField
-                label="Search Inventory"
                 variant="outlined"
+                placeholder="Search items..."
                 value={searchQuery}
-                onChange={handleSearch}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  handleSearch(e);
+                }}
                 InputProps={{
-                  startAdornment: <SearchIcon position="start" />,
+                  endAdornment: (
+                    <IconButton>
+                      <SearchIcon />
+                    </IconButton>
+                  ),
                 }}
               />
               <Button
                 variant="contained"
-                color="primary"
-                startIcon={<AddIcon />}
                 onClick={() => setDialogOpen(true)}
               >
-                Add Item
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<PhotoCamera />}
-                onClick={() => setWebcamOpen(true)}
-              >
-                Scan Inventory
+                Add New Item
               </Button>
             </Stack>
-            <Box mt={4} width="100%" maxWidth="600px" maxHeight="400px" overflow="auto">
-              <Stack spacing={2}>
+            <Box width='800px'>
+              <Box
+                width='100%'
+                height='100px'
+                bgcolor="primary.main"
+                display={"flex"}
+                alignItems={"center"}
+                justifyContent={"center"}
+                borderRadius={'8px 8px 0 0'}
+              >
+                <Typography variant={"h2"} color={"text.primary"}>Inventory Items</Typography>
+              </Box>
+              <Stack
+                width='100%'
+                spacing={2}
+                sx={{ overflowY: "auto", bgcolor: "background.paper", borderRadius: '0 0 8px 8px' }}
+                p={2}
+              >
                 {filteredInventory.length > 0 ? (
-                  filteredInventory.map((item) => (
-                    <Box
-                      key={item.name}
-                      display="flex"
-                      justifyContent="space-between"
-                      alignItems="center"
-                      p={2}
-                      bgcolor="background.paper"
-                      borderRadius={2}
-                    >
-                      <Typography variant="h6" color="text.primary">
-                        {item.name} - Quantity: {item.quantity}
+                  filteredInventory.map(({ name, quantity }) => (
+                    <Box key={name} width={'100%'} minHeight={'100px'} display={"flex"} alignItems={"center"} justifyContent={"space-between"} padding={2} bgcolor="background.paper" borderRadius={1}>
+                      <Typography variant={"h5"} color={"text.primary"}>
+                        {name.charAt(0).toUpperCase() + name.slice(1)}
                       </Typography>
-                      <Stack direction="row" spacing={1}>
-                        <IconButton onClick={() => addItem(item.name)}>
+                      <Typography variant={"h6"} color={"text.primary"}>
+                        Quantity: {quantity}
+                      </Typography>
+                      <Stack direction={"row"} spacing={1}>
+                        <IconButton sx={{ color: theme.palette.primary.main }} onClick={() => addItem(name)}>
                           <AddIcon />
                         </IconButton>
-                        <IconButton onClick={() => removeItem(item.name)}>
+                        <IconButton sx={{ color: theme.palette.primary.main }} onClick={() => removeItem(name)}>
                           <RemoveIcon />
                         </IconButton>
                       </Stack>
                     </Box>
                   ))
                 ) : (
-                  <Typography variant="h6" color="text.secondary">
+                  <Typography variant="h6" color={"text.secondary"}>
                     No items in inventory. Add a new item to get started.
                   </Typography>
                 )}
@@ -256,40 +224,6 @@ export default function Home() {
                     setDialogOpen(false);
                   }
                 }}>Add</Button>
-              </DialogActions>
-            </Dialog>
-            <Dialog open={webcamOpen} onClose={() => setWebcamOpen(false)}>
-              <DialogTitle>Scan Inventory</DialogTitle>
-              <DialogContent>
-                <Webcam
-                  audio={false}
-                  screenshotFormat="image/jpeg"
-                  width="100%"
-                  ref={webcamRef}
-                />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={() => setWebcamOpen(false)}>Cancel</Button>
-                <Button onClick={capture}>Capture</Button>
-              </DialogActions>
-            </Dialog>
-            <Dialog open={confirmOpen} onClose={() => setConfirmOpen(false)}>
-              <DialogTitle>Confirm Items</DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  The following items were detected. Confirm to add them to your inventory.
-                </DialogContentText>
-                <Box maxHeight="200px" overflow="auto">
-                  {detectedItems.map((item, index) => (
-                    <Typography key={index} variant="h6" color="text.primary">
-                      {item}
-                    </Typography>
-                  ))}
-                </Box>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={() => setConfirmOpen(false)}>Cancel</Button>
-                <Button onClick={handleConfirm}>Confirm</Button>
               </DialogActions>
             </Dialog>
             <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={() => setSnackbarOpen(false)}>

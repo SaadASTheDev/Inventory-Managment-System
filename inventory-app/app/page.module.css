@@ -1,0 +1,23 @@
+/* components/Dashboard.module.css */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+:root {
+  --primary-color: #7e21ff;
+  --secondary-color: #121212;
+  --background-color: #121212;
+  --paper-color: #1c1c1c;
+  --text-primary-color: #ffffff;
+  --text-secondary-color: #ae97c6;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.box-animate {
+  transition: all 0.3s ease-in-out;
+}
+
+.box-animate:hover {
+  transform: scale(1.02);
+}

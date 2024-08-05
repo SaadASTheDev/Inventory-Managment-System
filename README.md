@@ -1,4 +1,4 @@
-#Inventory Management System
+Inventory Management System
 Overview
 This is a modern, minimalist inventory management system built using Next.js and Firebase. It features a sleek, dark-themed UI, responsive design, and real-time inventory tracking. Users can manage their inventory, add and remove items, and search for items efficiently. The application supports dark mode based on system settings and includes a visually appealing background animation.
 
@@ -22,24 +22,22 @@ npm or yarn
 Firebase project setup
 Setup
 Clone the Repository
-
 bash
 Copy code
 git clone https://github.com/your-username/inventory-management-system.git
 cd inventory-management-system
 Install Dependencies
-
 bash
 Copy code
 npm install
-# or
+or
+
+bash
+Copy code
 yarn install
 Set Up Firebase
-
 Create a Firebase project and configure Firestore and Authentication.
-
 Add your Firebase configuration to a .env.local file in the root directory:
-
 env
 Copy code
 NEXT_PUBLIC_FIREBASE_API_KEY=your-api-key
@@ -49,11 +47,13 @@ NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-storage-bucket
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
 NEXT_PUBLIC_FIREBASE_APP_ID=your-app-id
 Run the Development Server
-
 bash
 Copy code
 npm run dev
-# or
+or
+
+bash
+Copy code
 yarn dev
 The application will be available at http://localhost:3000.
 
@@ -65,30 +65,43 @@ Remove Item: Click the "-" icon next to the item you want to remove.
 Search Items: Use the search bar to filter inventory items.
 Contributing
 Fork the Repository
-
 Create a Feature Branch
-
 bash
 Copy code
 git checkout -b feature/your-feature
 Commit Your Changes
-
 bash
 Copy code
 git commit -am 'Add some feature'
 Push to the Branch
-
 bash
 Copy code
 git push origin feature/your-feature
 Open a Pull Request
-
 Go to the repository on GitHub and create a pull request from your feature branch.
-
 License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 Contact
 Author: Saad Ahmad Sabri
 GitHub: github.com/your-username
-Email: your-email@example.com
+About
+This project is a pantry management application that allows users to keep track of pantry items by adding or removing items and updating their quantities. The project uses Next.js as the frontend framework, Material UI for the UI components, and Firebase as the backend service.
+
+Resources
+Readme
+Activity
+Stats
+Stars: 1 star
+Watchers: 1 watching
+Forks: 0 forks
+Releases
+No releases published
+Packages
+No packages published
+Deployments
+Production – inventory-management-system-ckhm 2 hours ago
+Production – inventory-management-system
+Languages
+JavaScript: 91.3%
+CSS: 8.7%
